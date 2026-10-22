@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/fase-1-sql-ado/">
+    <File Path="fase-1-sql-ado/01-ado-net/notas.md" />
+    <File Path="fase-1-sql-ado/01-ado-net/README.md" />
+    <Project Path="fase-1-sql-ado/01-ado-net/AdoNet.Practica/AdoNet.Practica.csproj" />
+  </Folder>
+</Solution>
