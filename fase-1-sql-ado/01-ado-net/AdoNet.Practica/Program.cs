@@ -1,1 +1,3 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using AdoNet.Practica;
+
+await Ejercicio_2.Ejercicio();
