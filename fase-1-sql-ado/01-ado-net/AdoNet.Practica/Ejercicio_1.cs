@@ -7,7 +7,7 @@ public class Ejercicio_1
     //A)Productos de una categoria especifica, usando SqlParameter
     public static async Task Ejercicio()
     {
-        await using var connection = await ConnectionDatabase.Connection();
+        await using var connection = await DbConnectionFactory.OpenConnectionAsync();
         int categoriaId = 3;
 
         const string sql = "SELECT Id, Nombre, Precio, Cantidad FROM Productos WHERE CategoriaId = @CategoriaId";

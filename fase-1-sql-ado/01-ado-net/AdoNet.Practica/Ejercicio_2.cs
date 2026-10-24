@@ -7,7 +7,7 @@ public class Ejercicio_2
     //B)Cuantos Productos hay en total, usando ExecuteScalarAsync()
     public static async Task Ejercicio()
     {
-        await using var connection = await ConnectionDatabase.Connection();
+        await using var connection = await DbConnectionFactory.OpenConnectionAsync();
         const string sql = "SELECT COUNT(*) FROM Productos";
 
         await using var command = new SqlCommand(sql, connection);

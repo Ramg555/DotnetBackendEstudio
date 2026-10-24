@@ -15,5 +15,11 @@ ExecuteNonQueryAsync() = no devuelve filas, solo cuantas fueron afectadas (INSER
 
 Flujo = Abrir conexion -> crear comando -> agregar parametros -> ejecutar -> leer -> cerrar.
 
-1.Supongo que para hacerlo de una forma mas comoda y facil de hacer y entender.
-2.Existe una vulerabilidad ahi no? Creo que SQL Inyection
+ExecuteScalarAsync() puede devolver: 
+	DBNull.Value: La consulta si trajo una fila pero el valor de esa filla es null entonces devuelve un DBNull.
+	null: Si la consulta no devolvio ninguna fila.
+
+Solucion: 
+	decimal total = resultado is null or DBNull ? 0 : Convert.ToDecimal(resultado);
+
+Todo lo que es IDisposable en ADO.NET va con await using

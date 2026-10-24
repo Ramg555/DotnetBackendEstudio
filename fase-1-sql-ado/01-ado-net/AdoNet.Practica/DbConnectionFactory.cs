@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace AdoNet.Practica;
 
-public class ConnectionDatabase
+public class DbConnectionFactory
 {
-    public static async Task<SqlConnection?> Connection()
+    public static async Task<SqlConnection?> OpenConnectionAsync()
     {
         var config = new ConfigurationBuilder()
         .AddUserSecrets<Program>()
