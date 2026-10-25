@@ -23,3 +23,7 @@ Solucion:
 	decimal total = resultado is null or DBNull ? 0 : Convert.ToDecimal(resultado);
 
 Todo lo que es IDisposable en ADO.NET va con await using
+
+var nuevoIdParam = command.Parameters.Add("@NuevoId", SqlDbType.Int);
+nuevoIdParam.Direction = ParameterDirection.Output; 
+-- Despues de ejecutar el comando, el valor esta en nuevoIdParam.Value

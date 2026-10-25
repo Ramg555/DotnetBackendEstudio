@@ -1,3 +1,3 @@
 ﻿using AdoNet.Practica;
 
-await Ejercicio_3.Ejercicio();
+await Ejercicio_4.Ejercicio();
