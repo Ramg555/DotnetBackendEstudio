@@ -38,3 +38,19 @@ el pool evista ese costo si se vuelve a abrir.
 	-Sistemas donde la logica vive en Store Procedures
 	-Operaciones masivas
 	-Control total del SQL generado
+
+- DAPPER -
+
+Dapper es un micro-ORM donde escribes por completo el SQL pero te ahorras el GetOrdinal, GetString, GetInt32 o sea todo el mapeo.
+Funciona como metodos de extension sobre la conexion
+
+Metodo  | Equivalete a ADO.NET
+
+QueryAsync<T> | ExecuteReader + mapear todas las filas
+QueryFirstOrDefaultAsync<T> | ExecuteReader + leer una fila o null
+ExecuteScalarAsync<T> | ExecuteScalar ya convertido a tipo
+ExecuteAsync | ExecuteNonQuery
+
+Dapper mapea por nombre: la columna Nombre del resultado se asigna a la propiedad Nombre de tu clase.
+Dapper recibe los parametros como un objeto anonimo: new {categoriaId = 3} 
+
