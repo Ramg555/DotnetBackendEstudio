@@ -1,4 +1,6 @@
-﻿namespace Dapper.Practica
+﻿using Dapper;
+
+namespace DapperProject.Practica
 {
     public static class Plantilla
     {

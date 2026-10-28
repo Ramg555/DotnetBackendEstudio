@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace Dapper.Practica;
+namespace DapperProject.Practica;
 
 public static class DbConnectionFactory
 {

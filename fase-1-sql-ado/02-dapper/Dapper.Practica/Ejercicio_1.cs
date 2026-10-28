@@ -1,6 +1,7 @@
-﻿using System.Data;
+﻿using Dapper;
+using System.Data;
 
-namespace Dapper.Practica;
+namespace DapperProject.Practica;
 
 public static class Ejercicio_1
 {
@@ -8,7 +9,7 @@ public static class Ejercicio_1
     {
         await using var connection = await DbConnectionFactory.OpenConnectionAsync();
 
-        var productos = await connection.QueryAsync<Producto>("BuscarProductos", new { Texto = "Lap", PrecioMaximo = 15000}, commandType: CommandType.StoredProcedure);
+        var productos = await connection.QueryAsync<Producto>("BuscarProductos", new { Texto = new DbString { Value = "Lap", IsAnsi = true, Length = 100 }, PrecioMaximo = 15000m}, commandType: CommandType.StoredProcedure);
 
         foreach(var producto in productos)
         {

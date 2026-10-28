@@ -1,6 +1,7 @@
-﻿using System.Data;
+﻿using Dapper;
+using System.Data;
 
-namespace Dapper.Practica;
+namespace DapperProject.Practica;
 
 public static class Ejercicio_4
 {
@@ -9,8 +10,8 @@ public static class Ejercicio_4
         await using var connection = await DbConnectionFactory.OpenConnectionAsync();
 
         var parametros = new DynamicParameters();
-        parametros.Add("@Nombre", "Saco");
-        parametros.Add("@Precio", 1200);
+        parametros.Add("@Nombre", "Saco", DbType.AnsiString);
+        parametros.Add("@Precio", 1200m);
         parametros.Add("@Cantidad", 5);
         parametros.Add("@CategoriaId", 2);
         parametros.Add("@NuevoId", dbType: DbType.Int32, direction: ParameterDirection.Output);
