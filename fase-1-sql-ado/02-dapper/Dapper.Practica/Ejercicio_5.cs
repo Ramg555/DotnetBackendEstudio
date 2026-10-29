@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DapperProject.Practica.Models;
 
 namespace DapperProject.Practica;
 
@@ -30,18 +31,4 @@ public static class Ejercicio_5
             Console.WriteLine($"{producto.Nombre} | {producto.Precio} | {producto.Categoria?.Nombre ?? "Sin Categoria"} | (Id {producto.Categoria?.Id})");
         }
     }
-}
-
-public class Categoria
-{
-    public int Id { get; set; }
-    public string Nombre { get; set; } = string.Empty;
-}
-
-public class Producto
-{
-    public int Id { get; set; }
-    public string Nombre { get; set; } = string.Empty;
-    public decimal Precio { get; set; }
-    public Categoria? Categoria { get; set; }
 }
