@@ -1,12 +1,10 @@
 ﻿using Dapper;
 using DapperProject.Practica.Models;
-using Microsoft.Data.SqlClient;
 
 namespace DapperProject.Practica;
 
 public static class Parcial
 {
-    private static readonly Task<SqlConnection> sqlConnection = DbConnectionFactory.OpenConnectionAsync();
     public static async Task EjecutarAsync()
     {
         var producto = await ObtenerProductoPorIdAsync(10);
@@ -15,16 +13,19 @@ public static class Parcial
         Console.WriteLine();
 
         var productos = await ObtenerProductosPorCategoriaAsync("Electronica");
-        foreach(var p in productos)
+        foreach (var p in productos)
         {
-            Console.WriteLine();
+            Console.WriteLine($"{p.Id} | {p.Nombre} | {p.Precio} | {p.Categoria?.Nombre ?? "Sin Categoria"} (Id {p.Categoria?.Id ?? 0})");
         }
+        Console.WriteLine();
+
         var nuevoId = await CreatCategoriaAsync("Deportes");
+        Console.WriteLine($"Nuevo Id: {nuevoId}");
     }
 
     private static async Task<Producto?> ObtenerProductoPorIdAsync(int id)
     {
-        await using var connection = await sqlConnection;
+        await using var connection = await DbConnectionFactory.OpenConnectionAsync();
 
         const string sql = """
             SELECT * FROM Productos WHERE Id = @Id
@@ -35,7 +36,7 @@ public static class Parcial
 
     private static async Task<IEnumerable<Producto>> ObtenerProductosPorCategoriaAsync(string nombreCategoria)
     {
-        await using var connection = await sqlConnection;
+        await using var connection = await DbConnectionFactory.OpenConnectionAsync();
 
         const string sql = """
             SELECT p.Id, p.Nombre, p.Precio, c.Id, c.Nombre FROM Productos p
@@ -56,6 +57,13 @@ public static class Parcial
 
     private static async Task<int> CreatCategoriaAsync(string nombre)
     {
+        await using var connection = await DbConnectionFactory.OpenConnectionAsync();
 
+        const string sql = """
+            INSERT Categorias(Nombre) VALUES(@Nombre);
+            SELECT CAST(SCOPE_IDENTITY() AS INT)
+            """;
+
+        return await connection.ExecuteScalarAsync<int>(sql, new { nombre = new DbString { Value = nombre, IsAnsi = true, Length = 50 } });
     }
 }

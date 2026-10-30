@@ -1,4 +1,4 @@
-ADO.NET
+- ADO.NET -
 
 ADO.NET es la forma nativa de .NET para hablar con una base de datos. EF Core esta construido encima de ADO.NET
 
@@ -53,4 +53,16 @@ ExecuteAsync | ExecuteNonQuery
 
 Dapper mapea por nombre: la columna Nombre del resultado se asigna a la propiedad Nombre de tu clase.
 Dapper recibe los parametros como un objeto anonimo: new {categoriaId = 3} 
+
+Para evitar el SQL injection basta con declarar los parametros correctamente, la forma en la que podria ser vulnerable seria que
+se concatene o interpole lo que escribio el usuario.
+
+Dapper envia los string como NVARCHAR(4000) como NVARCHAR tiene mayor precedencia que VARCHAR, 
+SQL Server convierte la columna para compararla y eso impide usar el indice(pasa de buscar a recorrer toda la tabla) 
+MYSQL = LONGTEXT 
+SQL SERVER = NVARCHAR(4000)
+
+Si mapeas a un record posicional donde no coinciden los nombres Dapper no encuentra un constructor cuyo parametros coincidan en nombre y tipo con las columnas del resultado
+
+
 
