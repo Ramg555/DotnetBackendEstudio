@@ -1,4 +1,4 @@
-- ADO.NET -
+------------------------- ADO.NET -----------------------
 
 ADO.NET es la forma nativa de .NET para hablar con una base de datos. EF Core esta construido encima de ADO.NET
 
@@ -39,7 +39,7 @@ el pool evista ese costo si se vuelve a abrir.
 	-Operaciones masivas
 	-Control total del SQL generado
 
-- DAPPER -
+---------------- DAPPER -------------------
 
 Dapper es un micro-ORM donde escribes por completo el SQL pero te ahorras el GetOrdinal, GetString, GetInt32 o sea todo el mapeo.
 Funciona como metodos de extension sobre la conexion
@@ -64,5 +64,50 @@ SQL SERVER = NVARCHAR(4000)
 
 Si mapeas a un record posicional donde no coinciden los nombres Dapper no encuentra un constructor cuyo parametros coincidan en nombre y tipo con las columnas del resultado
 
+---------------- SQL Server --------------
 
+Tipos de Datos:
+
+-Numericos
+
+INT: enteros hasta 2,100 millones. Lo normal para Ids
+BIGINT: cuando INT puede quedarse corto (tablas con miles de millones de filas)
+DECIMAL(p,s): numericos exactos. DECIMAL(10,2) = 10 digitos en total, 2 decimales. Es el tipo para dinero.
+FLOAT: numeros aproximados. Para calculos cientificos, nunca por dinero.
+
+-Texto 
+VARCHAR(n): texto de longitud variable, 1 byte por caracter.
+NVARCHAR(n): texto Unicode, 2 bytes por caracter. Soporta cualquier idioma y emojis.
+CHAR(n): longitud fija; rellena con espacios. Util para codigos de tamaño fijo.
+VARCHAR(MAX) / NVARCHAR(MAX): textos muy largos.
+TEXT Y NTEXT: obsoletos
+
+-Fechas
+DATE: solo fecha
+DATETIME2: fecha y hora con precision. Preferible a DATETIME,  que es el tipo antiguo.
+DATETIMEOFFSET: fecha y hora con zona horaria.
+
+-Otros
+BIT: 0 o 1. El booleano de SQL Server
+UNIQUEIDENTIFIER: un GUID.
+
+Restricciones(constraints)
+
+Restriccion | Que garantiza
+
+PRIMARY KEY | Idenfitificador unico de cada fila; no nulo
+FOREIGN KEY | Que el valor exista en otra tabla
+UNIQUE | Que no haya valores repetidos
+CHECK | Que el valor cumpla una condicion
+DEFAULT | Un valor cuando no se especifica uno
+NOT NULL | Que el valor siempre exista
+
+Buena practica: nombrar las restricciones. Si no, SQL Server inventa nombres random, y el dia que tengas que eliminarla o te salga un error, no 
+se sabra cual es.
+
+CONSTRAINT PK_Productos PRIMARY KEY (Id)
+CONSTRAINT FK_Productos_Categorias FOREIGN KEY (CategoriaId) REFERENCES Categorias(Id)
+CONSTRAINT UQ_Categorias_Nombre UNIQUE (Nombre)
+CONSTRAINT CK_Productos_Precio CHECK (Precio > 0),
+CONSTRAINT DF_Productos_Activo DEFAULT 1 FOR Activo
 

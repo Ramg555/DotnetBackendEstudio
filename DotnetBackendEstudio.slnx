@@ -1,8 +1,9 @@
 <Solution>
   <Folder Name="/fase-1-sql-ado/">
-    <File Path="fase-1-sql-ado/01-ado-net/notas.md" />
-    <File Path="fase-1-sql-ado/01-ado-net/README.md" />
+    <File Path="fase-1-sql-ado/notas.md" />
+    <File Path="fase-1-sql-ado/README.md" />
     <Project Path="fase-1-sql-ado/01-ado-net/AdoNet.Practica/AdoNet.Practica.csproj" />
     <Project Path="fase-1-sql-ado/02-dapper/Dapper.Practica/DapperProject.Practica.csproj" Id="3a1ce793-cb36-4d28-b998-8a8a1826293e" />
+    <Project Path="fase-1-sql-ado/03-sql_server/SQLServer.Practica/SQLServer.Practica.csproj" Id="82f0449f-593f-4b6d-b636-649950ace5b3" />
   </Folder>
 </Solution>

@@ -1,0 +1,52 @@
+CREATE DATABASE TiendaDb;
+GO
+
+USE TiendaDb;
+GO
+
+CREATE TABLE Categorias(
+	Id INT IDENTITY(1,1) CONSTRAINT PK_Categorias PRIMARY KEY,
+	Nombre VARCHAR(50) NOT NULL CONSTRAINT UQ_Categorias_Nombre UNIQUE
+);
+
+CREATE TABLE Productos(
+	Id INT IDENTITY(1,1) CONSTRAINT PK_Productos PRIMARY KEY,
+	Nombre VARCHAR(100) NOT NULL,
+	Precio DECIMAL(10,2) NOT NULL CONSTRAINT CK_Productos_Precio CHECK (Precio > 0),
+	Stock INT NOT NULL CONSTRAINT CK_Productos_Stock CHECK (Stock >= 0) CONSTRAINT DF_Productos_Stock DEFAULT 0,
+	CategoriaId INT NOT NULL CONSTRAINT FK_Productos_Categorias FOREIGN KEY REFERENCES Categorias(Id),
+	Activo BIT NOT NULL CONSTRAINT DF_Productos_Activo DEFAULT 1,
+	FechaAlta DATE NOT NULL CONSTRAINT DF_Productos_FechaAlta DEFAULT CAST(GETDATE() AS DATE)
+);
+
+CREATE TABLE Clientes(
+	Id INT IDENTITY(1,1) CONSTRAINT PK_Clientes PRIMARY KEY,
+	Nombre NVARCHAR(100) NOT NULL,
+	Email VARCHAR(150) NOT NULL CONSTRAINT UQ_Clientes_Email UNIQUE,
+	Ciudad VARCHAR(50),
+	FechaRegistro DATETIME2 NOT NULL CONSTRAINT DF_Clientes_FechaRegistro DEFAULT SYSDATETIME()
+);
+
+CREATE TABLE Empleados(
+	Id INT IDENTITY(1,1) CONSTRAINT PK_Empleados PRIMARY KEY,
+	Nombre NVARCHAR(100) NOT NULL,
+	Puesto VARCHAR(50) NOT NULL,
+	Salario DECIMAL(10,2) NOT NULL CONSTRAINT CK_Empleados_Salario CHECK(Salario > 0),
+	JefeId INT CONSTRAINT FK_Empleados_JefeId FOREIGN KEY REFERENCES Empleados(Id)
+);
+
+CREATE TABLE Pedidos(
+	Id INT IDENTITY(1,1) CONSTRAINT PK_Pedidos PRIMARY KEY,
+	ClienteId INT NOT NULL CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY REFERENCES Clientes(Id),
+	EmpleadoId INT NOT NULL CONSTRAINT FK_Pedidos_Empleados FOREIGN KEY REFERENCES Empleados(Id),
+	Fecha DATETIME2 NOT NULL CONSTRAINT DF_Pedidos_Fecha DEFAULT SYSDATETIME(),
+	Estado VARCHAR(20) NOT NULL CONSTRAINT CK_Pedidos_Estado CHECK (Estado IN ('Pendiente', 'Enviado', 'Entregado', 'Cancelado'))
+);
+
+CREATE TABLE PedidoDetalle(
+	PedidoId INT CONSTRAINT FK_PedidoDetalle_Pedidos FOREIGN KEY REFERENCES Pedidos(Id),
+	ProductoId INT CONSTRAINT FK_PedidoDetalle_Productos FOREIGN KEY REFERENCES Productos(Id),
+	Cantidad INT NOT NULL CONSTRAINT CK_PedidoDetalle_Cantidad CHECK (Cantidad > 0),
+	PrecioUnitario DECIMAL(10,2) NOT NULL CONSTRAINT CK_PedidoDetalle_PrecioUnitario CHECK (PrecioUnitario > 0),
+	CONSTRAINT PK_PedidoDetalle PRIMARY KEY(PedidoId, ProductoId)
+);
