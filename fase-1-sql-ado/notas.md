@@ -111,3 +111,59 @@ CONSTRAINT UQ_Categorias_Nombre UNIQUE (Nombre)
 CONSTRAINT CK_Productos_Precio CHECK (Precio > 0),
 CONSTRAINT DF_Productos_Activo DEFAULT 1 FOR Activo
 
+-Clausulas
+
+Paso | Clausula | Que hace
+
+1 | FROM/JOIN | Obtiene las filas de origen
+2 | WHERE | Filtra las filas
+3 | GROUP BY | Agrupa
+4 | HAVING | Filtra grupos
+5 | SELECT | Calcula columnas y alias
+6 | DISTINCT | Elimina duplicados
+7 | ORDER BY | Ordena
+8 | OFFSET/FETCH | Toma una porcion
+
+Operadores de filtro
+
+WHERE Precio > 500 - Donde precio sea mayor a 500
+WHERE Estado <> 'Cancelado' - Donde Estado sea distinto de Cancelado
+WHERE Precio BETWEEN 200 AND 1500 - Donde precio este entre 200 y 500, incluye ambos extremos
+WHERE CategoriaId IN (1,2) - Donde CategoriaId el valor sea 1 o 2
+WHERE Nombre LIKE 'Lap%' - Donde nombre empieze con "Lap"
+WHERE Nombre LIKE '%gel' - Donde nombre termina con "gel"
+WHERE Nombre LIKE '_apiz' - Donde nombre tenga exactamente apiz, "_" = exactamente un caracter
+
+NULL no es un valor, significa desconocido, cualquier comparacion con NULL da desconocido, no verdadero ni falso. 
+WHERE solo conserva las filas donde la condicion es verdadera.
+
+WHERE Ciudad <> 'Chihuahua' no devuelve los clientes sin ciudad.
+Se tienen que pedir explicitamente = WHERE Ciudad <> 'Chihuahua' OR Ciudad IS NULL
+
+-Precedencia de AND y OR
+
+AND se evalua antes que OR, igual que la multiplicacion antes que la suma. Cuando se utilice ambos es mejor utilizar parentesis.
+
+-Filtrar fechas correctamente
+
+WHERE Fecha >= '2026-03-01' AND Fecha < '2026-04-01'
+
+Cuidado con BETWEEN en columnas con hora: BETWEEN '2026-03-01' AND '2026-03-31' excluye casi todo el dia 31
+porque ''2026-03-31 equivale a 2026-03-31 00:00:00
+
+-TOP y paginacion
+
+SELECT TOP (3) Nombre, Precio
+FROM Productos
+ORDER BY Precio DESC
+
+La paginacion estandar en SQL Server es OFFSET ... FETCH, y exige un ORDER BY:
+
+DECLARE @Pagina INT = 2;
+DECLARE @TamanoPagina INT = 5;
+
+SELECT Id, Nombre, Precio
+FROM Productos
+ORDER BY Nombre, Id
+OFFSET (@Pagina - 1) * @TamanoPagina ROWS
+FETCH NEXT @TamanoPagina ROWS ONLY;
