@@ -167,3 +167,23 @@ FROM Productos
 ORDER BY Nombre, Id
 OFFSET (@Pagina - 1) * @TamanoPagina ROWS
 FETCH NEXT @TamanoPagina ROWS ONLY;
+
+------------ JOINS --------------
+
+JOIN | Que filas conserva
+
+INNER JOIN | Solo las que tienen pareja en ambas tablas
+LEFT JOIN | Todas las de la izquierda; las de la derecha si hay pareja, si no, NULL
+RIGHT JOIN | Lo contrario. Casi no se usa: se escribe como LEFT invirtiendo las tablas
+FULL JOIN | Todas las de ambos lados, con NULL donde no hay pareja
+CROSS JOIN | Cada fila de una con cada fila de la otra (producto cartesiano)
+
+JOIN a secas es INNER JOIN
+
+Cada JOIN se agrega al resultado del anterior:
+
+SELECT p.Id, c.Nombre AS Cliente, pr.Nombre AS Producto, pd.Cantidad
+FROM Pedidos p
+JOIN Clientes c ON c.Id = p.ClienteId
+JOIN PedidoDetalle pd ON p.PedidoId = p.Id
+JOIN Productos pr ON pr.Id = pd.ProductoId;
